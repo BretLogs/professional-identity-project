@@ -39,7 +39,7 @@ export default function FormPage() {
       <NavigationMenu />
       
       {/* Liquid Ether Background */}
-      <div className="absolute inset-0 pointer-events-auto">
+      <div className="absolute inset-0 pointer-events-none">
         <LiquidEther 
           mouseForce={20}
           cursorSize={100}
@@ -47,6 +47,7 @@ export default function FormPage() {
           autoDemo={true}
           autoSpeed={0.5}
           autoIntensity={2.2}
+          className="pointer-events-auto"
         />
       </div>
       
