@@ -1,6 +1,7 @@
 import NavigationMenu from '@/components/NavigationMenu'
 import AvatarImage from '@/components/home/AvatarImage'
 import HeaderIdentity from '@/components/home/HeaderIdentity'
+import UserDescription from '@/components/home/UserDescription'
 
 export default function Home() {
   return (
@@ -13,7 +14,9 @@ export default function Home() {
         <div className="col-span-2 col-start-3 flex items-end justify-start">
           <HeaderIdentity />
         </div>
-        <div className="col-span-2 row-span-2 col-start-3 row-start-2">5</div>
+        <div className="col-span-2 row-span-2 col-start-3 row-start-2">
+          <UserDescription />
+        </div>
       </div>
     </div>
   )
