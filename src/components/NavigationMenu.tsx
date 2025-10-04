@@ -19,6 +19,13 @@ export default function NavigationMenu() {
       ariaLabel: 'Go to Form Page',
       rotation: 8,
       hoverStyles: { bgColor: '#FF9FFC', textColor: '#ffffff' }
+    },
+    {
+      label: 'Portfolio',
+      href: '/portfolio',
+      ariaLabel: 'Go to Portfolio Page',
+      rotation: -4,
+      hoverStyles: { bgColor: '#B19EEF', textColor: '#ffffff' }
     }
   ]
 
@@ -35,7 +42,7 @@ export default function NavigationMenu() {
       
       if (link && link.hasAttribute('href')) {
         const href = link.getAttribute('href')
-        if (href && (href === '/' || href === '/form')) {
+        if (href && (href === '/' || href === '/form' || href === '/portfolio')) {
           e.preventDefault()
           navigate(href)
         }
