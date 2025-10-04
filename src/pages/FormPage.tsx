@@ -2,6 +2,7 @@ import NavigationMenu from '@/components/NavigationMenu'
 import LiquidEther from '@/components/LiquidEther'
 import SplitText from '@/components/SplitText'
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 interface FormData {
   name: string
@@ -12,7 +13,14 @@ interface FormData {
   height: string
 }
 
+interface ApiError {
+  detail: string
+}
+
 export default function FormPage() {
+  const [searchParams] = useSearchParams()
+  const coachId = searchParams.get('coach_id') || 'default-coach-id' // Get coach_id from URL
+  
   const [formData, setFormData] = useState<FormData>({
     name: '',
     birthday: '',
@@ -21,9 +29,72 @@ export default function FormPage() {
     kilograms: '',
     height: ''
   })
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData)
+  const handleSubmit = async () => {
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.kilograms || !formData.height) {
+      setErrorMessage('Please fill in all required fields: Name, Email, Weight, and Height')
+      setSubmitStatus('error')
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setErrorMessage('')
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+      
+      const response = await fetch(`${apiUrl}/api/v1/clients`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          coach_id: coachId,
+          name: formData.name,
+          email: formData.email,
+          kilograms: parseFloat(formData.kilograms),
+          height: parseFloat(formData.height),
+          birthday: formData.birthday || null,
+          schedule_date: formData.scheduleDate || null,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData: ApiError = await response.json()
+        throw new Error(errorData.detail || 'Failed to submit form')
+      }
+
+      const data = await response.json()
+      console.log('Form submitted successfully:', data)
+      
+      setSubmitStatus('success')
+      
+      // Reset form after successful submission
+      setTimeout(() => {
+        setFormData({
+          name: '',
+          birthday: '',
+          email: '',
+          scheduleDate: '',
+          kilograms: '',
+          height: ''
+        })
+        setSubmitStatus('idle')
+      }, 3000)
+      
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setErrorMessage(error instanceof Error ? error.message : 'An error occurred')
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +150,7 @@ export default function FormPage() {
           >
             <div className="space-y-2">
               <label htmlFor="name" className="block text-sm font-medium text-purple-100">
-                Full Name
+                Full Name <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
@@ -96,7 +167,7 @@ export default function FormPage() {
 
             <div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-medium text-purple-100">
-                Email Address
+                Email Address <span className="text-red-400">*</span>
               </label>
               <input
                 type="email"
@@ -113,7 +184,7 @@ export default function FormPage() {
 
             <div className="space-y-2">
               <label htmlFor="birthday" className="block text-sm font-medium text-purple-100">
-                Birthday
+                Birthday <span className="text-purple-300/50">(optional)</span>
               </label>
               <input
                 type="date"
@@ -123,14 +194,13 @@ export default function FormPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 style={{padding: '16px', marginBottom: '16px'}}
-                required
               />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="kilograms" className="block text-sm font-medium text-purple-100">
-                  Weight (kg)
+                  Weight (kg) <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="number"
@@ -140,6 +210,8 @@ export default function FormPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="70"
+                  step="0.1"
+                  min="0"
                   required
                   style={{padding: '16px', marginBottom: '16px'}}
                 />
@@ -147,7 +219,7 @@ export default function FormPage() {
 
               <div className="space-y-2">
                 <label htmlFor="height" className="block text-sm font-medium text-purple-100">
-                  Height (cm)
+                  Height (cm) <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="number"
@@ -157,6 +229,8 @@ export default function FormPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="170"
+                  step="0.1"
+                  min="0"
                   required
                   style={{padding: '16px', marginBottom: '16px'}}
                 />
@@ -167,7 +241,7 @@ export default function FormPage() {
                 style={{marginTop: '16px'}}
             >
               <label htmlFor="scheduleDate" className="block text-sm font-base text-purple-100">
-              Please select a date when you would be available for a quick call with me.
+              Please select a date when you would be available for a quick call with me. <span className="text-purple-300/50">(optional)</span>
               </label>
               <input
                 type="date"
@@ -176,18 +250,35 @@ export default function FormPage() {
                 value={formData.scheduleDate}
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                required
                 style={{padding: '16px', marginBottom: '16px'}}
               />
             </div>
+            
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+              <div className="bg-green-500/20 border border-green-500/50 text-green-100 px-4 py-3 rounded-lg">
+                ✅ Registration successful! We'll be in touch soon.
+              </div>
+            )}
+            
+            {submitStatus === 'error' && (
+              <div className="bg-red-500/20 border border-red-500/50 text-red-100 px-4 py-3 rounded-lg">
+                ❌ {errorMessage || 'An error occurred. Please try again.'}
+              </div>
+            )}
 
             <button
               onClick={handleSubmit}
-              className="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+              disabled={isSubmitting}
+              className="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               style={{padding: '16px', marginBottom: '16px', borderRadius: "100px"}}
             >
-              Submit Registration
+              {isSubmitting ? 'Submitting...' : 'Submit Registration'}
             </button>
+            
+            <p className="text-center text-purple-200/70 text-sm mt-4">
+              <span className="text-red-400">*</span> Required fields
+            </p>
           </div>
         </div>
       </div>

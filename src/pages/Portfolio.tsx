@@ -4,22 +4,22 @@ import ChromaGrid from '@/components/ChromaGrid'
 export default function Portfolio() {
     const items = [
         {
-          image: "https://i.pravatar.cc/300?img=1",
-          title: "Sarah Johnson",
-          subtitle: "Frontend Developer",
-          handle: "@sarahjohnson",
+          image: "https://storage.googleapis.com/identity-images-87659/kirk/sev-avatar.JPG",
+          title: "Sev Christian Constantino",
+          subtitle: "Matcho Ganado",
+          handle: "@sevconstantino",
           borderColor: "#3B82F6",
           gradient: "linear-gradient(145deg, #3B82F6, #000)",
-          url: "https://github.com/sarahjohnson"
+          url: "https://web.facebook.com/sev.constantino"
         },
         {
-          image: "https://i.pravatar.cc/300?img=2",
-          title: "Mike Chen",
-          subtitle: "Backend Engineer",
-          handle: "@mikechen",
+          image: "https://storage.googleapis.com/identity-images-87659/kirk/identity-avatar.jpg",
+          title: "Kirk\nAbaio",
+          subtitle: "Gym Construction",
+          handle: "@kirky",
           borderColor: "#10B981",
           gradient: "linear-gradient(180deg, #10B981, #000)",
-          url: "https://linkedin.com/in/mikechen"
+          url: "https://web.facebook.com/kirk.velasco.5#"
         }
       ];
 
