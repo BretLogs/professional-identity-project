@@ -52,8 +52,10 @@ export default function FormPage() {
       </div>
       
       {/* Form Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen py-24 px-6 md:px-12">
-        <div className="w-full max-w-[700px] mx-auto">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen py-24 px-6 md:px-12"
+      >
+        <div className="w-full max-w-[700px] mx-auto"
+        >
           {/* Animated Title */}
           <div className="mb-12 text-center">
             <SplitText 
@@ -72,7 +74,9 @@ export default function FormPage() {
           </div>
 
           {/* Form */}
-          <div className="space-y-6 backdrop-blur-lg bg-white/10 w-[700px] max-w-full p-12 rounded-2xl border border-purple-300/20 shadow-2xl mx-auto">
+          <div className="space-y-6 backdrop-blur-lg bg-white/10 w-[700px] max-w-full p-12 rounded-2xl border border-purple-300/20 shadow-2xl mx-auto"
+            style={{padding: '24px'}}
+          >
             <div className="space-y-2">
               <label htmlFor="name" className="block text-sm font-medium text-purple-100">
                 Full Name
@@ -85,21 +89,7 @@ export default function FormPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="Enter your full name"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="birthday" className="block text-sm font-medium text-purple-100">
-                Birthday
-              </label>
-              <input
-                type="date"
-                id="birthday"
-                name="birthday"
-                value={formData.birthday}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                style={{padding: '16px', marginBottom: '16px'}}
                 required
               />
             </div>
@@ -116,21 +106,23 @@ export default function FormPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="your.email@example.com"
+                style={{padding: '16px', marginBottom: '16px'}}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="scheduleDate" className="block text-sm font-medium text-purple-100">
-                Schedule Date
+              <label htmlFor="birthday" className="block text-sm font-medium text-purple-100">
+                Birthday
               </label>
               <input
                 type="date"
-                id="scheduleDate"
-                name="scheduleDate"
-                value={formData.scheduleDate}
+                id="birthday"
+                name="birthday"
+                value={formData.birthday}
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                style={{padding: '16px', marginBottom: '16px'}}
                 required
               />
             </div>
@@ -149,6 +141,7 @@ export default function FormPage() {
                   className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="70"
                   required
+                  style={{padding: '16px', marginBottom: '16px'}}
                 />
               </div>
 
@@ -165,13 +158,33 @@ export default function FormPage() {
                   className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="170"
                   required
+                  style={{padding: '16px', marginBottom: '16px'}}
                 />
               </div>
+            </div>
+
+            <div className="space-y-2"
+                style={{marginTop: '16px'}}
+            >
+              <label htmlFor="scheduleDate" className="block text-sm font-base text-purple-100">
+              Please select a date when you would be available for a quick call with me.
+              </label>
+              <input
+                type="date"
+                id="scheduleDate"
+                name="scheduleDate"
+                value={formData.scheduleDate}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white/5 border border-purple-300/30 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                required
+                style={{padding: '16px', marginBottom: '16px'}}
+              />
             </div>
 
             <button
               onClick={handleSubmit}
               className="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+              style={{padding: '16px', marginBottom: '16px', borderRadius: "100px"}}
             >
               Submit Registration
             </button>
