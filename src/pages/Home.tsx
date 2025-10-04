@@ -19,7 +19,7 @@ export default function Home() {
           <UserDescription />
           <div 
             className="my-20 border-t border-gray-400 w-full mx-auto" 
-            style={{paddingTop: "20px", paddingBottom: "20px"}}></div>
+            style={{marginTop: "20px", paddingBottom: "20px"}}></div>
           <ContactButton />
         </div>
       </div>
